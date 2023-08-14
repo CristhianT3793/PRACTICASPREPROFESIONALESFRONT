@@ -1,0 +1,488 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Proyecto_Ingles_V2.Interfaces.Site" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Practicas Preprofesionales UISEK</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="../Style/MyStyle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Our Custom CSS -->
+    <link href="../Style/MySideMenu.css" type="text/css" rel="stylesheet" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <!--sweetalert-->
+    <link rel="stylesheet" href="Style/EstiloNotificaciones.css" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.all.min.js" type="text/javascript"></script>
+
+    <style>
+        body {
+            font-size: 10.5px;
+            background-color: #F0F0F0;
+        }
+
+        @media (max-width:450px) {
+            img {
+                display: none;
+                height: 300px;
+                width: 300px;
+            }
+
+            .navbar-head {
+                font-size: 12px;
+            }
+
+            .imagen {
+                width: 100%;
+            }
+        }
+        /*Modal*/
+        .modalContainer {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+            .modalContainer .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid lightgray;
+                border-top: 10px solid #ffff;
+                width: 30%;
+            }
+
+            .modalContainer .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+                .modalContainer .close:hover,
+                .modalContainer .close:focus {
+                    color: #000;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+        /*fin Modal*/
+
+        .linkbtn:hover {
+            color: orange;
+        }
+    </style>
+    <asp:ContentPlaceHolder runat="server" ID="head">
+        @Scripts.Render("~/bundles/MsAjaxBundle")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+    </asp:ContentPlaceHolder>
+</head>
+<body onload="InitializeTimer();">
+
+    <form id="form1" runat="server" enctype="multipart/form-data">
+        <span id="TimeLeft"></span>
+
+        <div>
+            <asp:ScriptManager runat="server">
+                <Scripts>
+                    <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                    <%--Framework Scripts--%>
+                    <asp:ScriptReference Name="MsAjaxBundle" />
+                    <asp:ScriptReference Name="jquery" />
+                    <asp:ScriptReference Name="bootstrap" />
+                    <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                    <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                    <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                    <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                    <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                    <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                    <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                    <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                    <asp:ScriptReference Name="WebFormsBundle" />
+                    <%--Site Scripts--%>
+                </Scripts>
+            </asp:ScriptManager>
+        </div>
+        <!--header-->
+        <nav class="navbar-head">
+            
+            <div class="col-md-6">
+                <a href="/Default.aspx">
+                    <img src="/images/logo-sek-2.png" alt="Dont exist image" style="float: left; height: auto; width: 160px" />
+                </a>
+            </div>
+            <div class="col-md-6">
+                <div style="float: right;">
+                    APLICATIVO PRÁCTICAS PREPROFESIONALES
+                </div>
+            </div>
+            
+        </nav>
+        <!--fin header-->
+
+        <!--Menu lateral-->
+        <div class="wrapper">
+            <!-- Sidebar Holder -->
+            <nav id="sidebar">
+                <div id="dismiss">
+                    <i class="glyphicon glyphicon-arrow-left"></i>
+                </div>
+                <div class="sidebar-header">
+                    <h3>MENU</h3>
+                </div>
+                <ul class="list-unstyled components">
+                    <%var tipoProfesor = (int)Session["TipoProfesor"]; %>
+                    <!--1 es aprobador 2 es (tutor coordinador)-->
+
+                    <li>
+                        <a href="#Planificacion" data-toggle="collapse" aria-expanded="false">Planificación</a>
+                        <ul class="collapse list-unstyled" id="Planificacion">
+                            <%if (tipoProfesor == 1)
+                                {%>
+                            <li><a href="plantillasfpp.aspx">Plantillas FPP</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 1)
+                                {%>
+                            <li><a href="Empresas.aspx">Registro de Empresas</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 1)
+                                {%>
+                            <li><a href="areasestudio.aspx">Áreas de Estudio</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 2)
+                                {%>
+                            <li><a href="planificacionsemestral.aspx">Planificación Semestral</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 2)
+                                {%>
+                            <li style="display:none"><a href="ActaSocializacion.aspx">Acta de Socialización</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 2)
+                                {%>
+                            <li><a href="informesemestralfinal.aspx">Informe Semestral de Finalización de Prácticas</a></li>
+                            <%} %>
+							<%if (tipoProfesor == 2)
+                            {%>
+                            <li><a href="RegistroEmpresas.aspx">Registro Tutor de Empresas</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 1)
+                                {%>
+                            <li><a href="ConveniosEmpresas.aspx">Convenios</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 1)
+                                {%>
+                            <li><a href="horascumplimiento.aspx">Horas de Cumplimiento</a></li>
+                            <%} %>
+                        </ul>
+                    </li>
+
+                    <%if (tipoProfesor == 2)
+                        {%>
+                    <li>
+                        <a href="#solicitudestudiante" data-toggle="collapse" aria-expanded="false">Solicitud de Pasantías</a>
+                        <ul class="collapse list-unstyled" id="solicitudestudiante">
+                            <li><a href="SolicitudEstudiante.aspx">Solicitud</a></li>
+                        </ul>
+                    </li>
+                    <%} %>
+
+                    <li>
+                        <a href="#Pasantes" data-toggle="collapse" aria-expanded="false">Revisión de formularios</a>
+                        <ul class="collapse list-unstyled" id="Pasantes">
+                            <%if (tipoProfesor == 1)
+                                {%>
+                            <li><a href="pasantes.aspx">Revisión FPP</a></li>
+                            <%} %>
+                            <%if (tipoProfesor == 2)
+                                {%>
+                            <li><a href="pasantescoordinador.aspx">Cargar FPP</a></li>
+                            <%} %>
+                        </ul>
+                    </li>
+
+                    <%if (tipoProfesor == 1)
+                        {%>
+                    <li>
+                        <a href="#Pasantias" data-toggle="collapse" aria-expanded="false">Pasantías</a>
+                        <ul class="collapse list-unstyled" id="Pasantias">
+                            <li><a href="pasantias.aspx">Pasantías</a></li>
+                        </ul>
+                    </li>
+                    <%} %>
+                </ul>
+            </nav>
+            <!-- Page Content Holder -->
+            <div id="content">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                                <i class="glyphicon glyphicon-align-left"></i>
+                                <span></span>
+                            </button>
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <div class="navbar-right" style="padding-right: 10%">
+<%--                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <%var nombres = Session["Nombres"];
+                                            var apellidos = Session["Apellidos"];
+                                        %>
+                                        <div><%Response.Write(nombres + " " + apellidos);%></div>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="../Login/formLogout.aspx">Cerrar Sesión</a>
+                                    </div>
+                                </div>--%>
+                            </div>
+                            <!--alertas-->
+                            <%if (tipoProfesor == 1)
+                                {%>
+                            <div class="rad-top-nav-container">
+                                <ul class="links">
+                                    <li class="rad-dropdown">
+                                        <a class="rad-menu-item" href="#">
+                                            <i class="fas fa-solid fa-bell" style="font-size: 25px">
+                                                <span class="rad-menu-badge">
+                                                    <asp:Label ID="lblNotificaciones" runat="server" Text="0"></asp:Label>
+                                                </span>
+                                            </i>
+                                        </a>
+                                        <ul class="rad-dropmenu-item" style="overflow-y: scroll; max-height: 150px; padding: 0; font-size: 12px; text-align: center;">
+                                            <li class="rad-dropmenu-header" style="display: none">
+                                                <a href="notificaciones.aspx" style="background-color: white; text-decoration: underline; color: limegreen">Ver todas las notificaciones</a>
+                                            </li>
+                                            <li class="">
+                                                <asp:Repeater ID="rptNotificacion" runat="server">
+                                                    <HeaderTemplate>
+                                                        <table cellspacing="2" rules="all">
+                                                            <tr>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td>
+                                                                <asp:LinkButton ID="LinkButton1" runat="server" Text='<%# Eval("DESCRIPCIONNOTIFICACION") %>' Style="background-color: white;" OnClientClick='<%# "desactivarnotificacion(" + Eval("IDNOTIFICACION") + ");" %>' CssClass="linkbtn"></asp:LinkButton>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+
+                                                    <FooterTemplate>
+                                                        </table>
+                                                    </FooterTemplate>
+                                                </asp:Repeater>
+                                            </li>
+
+                                        </ul>
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <%} %>
+                            <!--fin alertas-->
+                        </div>
+
+                    </div>
+                </nav>
+                <!--contenido-->
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+                <!--fin contenido-->
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            </div>
+        </div>
+        <!-- fin menu lateral-->
+
+        <div class="overlay"></div>
+
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <!-- Bootstrap Js CDN -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        <!--footer-->
+        <div class="footer-content" style="height: 50px;">
+            <footer>
+                <p style="color: white; padding: 0.5%">
+                    <span class="glyphicon glyphicon-copyright-mark"></span><%: DateTime.Now.Year %> - Dirección de Tecnología 
+                </p>
+            </footer>
+        </div>
+        <!--fin footer-->
+    </form>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').fadeOut();
+        });
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').fadeIn();
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+    if (document.getElementById("Modal")) {
+        var modal = document.getElementById("tvesModal");
+        var btn = document.getElementById("Modal");
+        var span = document.getElementsByClassName("close")[0];
+        var body = document.getElementsByTagName("body")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+
+            body.style.position = "static";
+            body.style.height = "100%";
+            body.style.overflow = "hidden";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+
+            body.style.position = "inherit";
+            body.style.height = "auto";
+            body.style.overflow = "visible";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+
+                body.style.position = "inherit";
+                body.style.height = "auto";
+                body.style.overflow = "visible";
+            }
+        }
+    }
+    var iStart = 0;
+    var iMinute = <%= Session.Timeout%>; //Obtengo el tiempo de session permitida
+    function InitializeTimer() {
+        showTimer();
+    }
+
+    function showTimer() {
+        iStart = 60;
+        iMinute -= 1
+        lessMinutes();
+    }
+    function lessMinutes() {
+        //Busco mi elemento que uso para mostrar los minutos que le quedan (minutos y segundos)
+        obj = document.getElementById('TimeLeft');
+        if (iStart == 0) {
+            iStart = 60
+            iMinute -= 1;
+        }
+        iStart = iStart - 1;
+
+        //Si minuto y segundo = 0 ya expiró la sesion
+        if (iMinute == 0 && iStart == 0) {
+            //alert("Su sesión ha expirado, sera redireccionado a la página principal");
+            SessionCaducada();
+            //window.location.href = '<%= Request.ApplicationPath %>' + 'Login/formLogin.aspx';
+        }
+
+        if (iStart < 10)
+            obj.innerText = iMinute.toString() + ':0' + iStart.toString();
+        else
+            obj.innerText = iMinute.toString() + ':' + iStart.toString();
+
+        //actualizo mi método cada segundo 
+        window.setTimeout("lessMinutes();", 1000)
+    }
+
+    function SessionCaducada() {
+
+        Swal.fire({
+            icon: 'warning',
+            text: 'Su sesión ha expirado, será redireccionado a la página principal'
+        }).then(function () {
+            if (true) {
+                window.location = "https://portaldocentes.uisek.edu.ec/"
+            }
+        })
+    }
+
+    //alertas
+
+    $(function () {
+
+        $(document).on("click", function (e) {
+            var $item = $(".rad-dropmenu-item");
+            if ($item.hasClass("active")) {
+                $item.removeClass("active");
+            }
+        });
+
+
+
+        $(".rad-dropdown >.rad-menu-item").on('click', function (e) {
+            e.stopPropagation();
+            $(".rad-dropmenu-item").removeClass("active");
+            $(this).next(".rad-dropmenu-item").toggleClass("active");
+        });
+
+
+
+    });
+
+    function desactivarnotificacion(id) {
+        var id_ = id;
+        //var anio = document.getElementById("hd_anio").value;
+        if (id != 0) {
+            $.ajax({
+                type: "POST",
+                url: 'WSFunciones.asmx/DesactivarNotificacion',
+                contentType: "application/json; charset=utf-8",
+                data: "{ id: '" + id_ + "'}",
+                dataType: "json",
+
+                success: function (response, status) {
+                    window.location.reload();
+                }, statusCode: {
+                    404: function (content) { alert('cannot find resource'); },
+                    500: function (content) { alert('internal server error'); }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error ");
+                }
+            });
+        }
+    }
+
+
+
+</script>
+
+

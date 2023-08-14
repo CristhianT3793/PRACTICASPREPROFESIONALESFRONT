@@ -1,0 +1,196 @@
+﻿
+.navbar-head {
+    background-color: rgb(8, 83, 148);
+    color: #fff;
+    width: 100%;
+    height: auto;
+    line-height: 80px;
+    font-size: 18px;
+    padding: 0 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    
+}
+
+
+
+        .navbar-head a.navbar-brand {
+            float: left;
+            /*height: 76px;*/
+            line-height: inherit;
+            
+            
+            text-transform: uppercase;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+            .navbar-head a.navbar-brand span {
+                /*font-size: 28px;*/
+                font-weight: 700;
+/**/            }
+
+    .navbar-head ul {
+        float: right;
+        list-style: none;
+        height: inherit;
+        line-height: inherit;
+        padding: 0 50px;
+    }
+
+        .navbar-head ul li {
+            display: inline-block;
+        }
+
+            .navbar-head ul li a {
+                display: block;
+                text-align: center;
+                min-width: 120px;
+                padding: 0 30px;
+            }
+
+                .navbar-head ul li a:hover {
+                    background-color: rgba(255,255,255,0.15);
+                }
+
+  .navbar-head .navbar-toggler {
+        display: none;
+    }
+
+@media (max-width: 991px) {
+    .navbar-head ul {
+        padding: 0 10px;
+
+    }
+
+        .navbar-head ul li a {
+            min-width: 100px;
+            padding: 0 20px;
+        }
+
+}
+
+@media (max-width: 0px) {
+    .navbar-head {
+        padding: 0;
+    }
+
+        .navbar-head ul {
+            width: 100%;
+            padding: 0;
+            background-color: rgba(0,0,0,0.9);
+            /* height: auto; */
+            height: 100vh;
+            max-height: 0;
+/*            overflow: hidden;
+            transition: all ease-in-out 0.3s;*/
+        }
+
+            .navbar-head ul.open {
+                max-height: 100vh;
+            }
+
+            .navbar-head ul li {
+                width: 100%;
+            }
+
+                .navbar-head ul li a {
+                    padding: 0;
+                }
+
+/*        .navbar-head .navbar-toggler {
+            display: block;
+            position: absolute;
+            height: 40px;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: #fff;
+            outline: none;
+            padding: 0 5px;
+            cursor: pointer;
+        }*/
+
+             /*.navbar-head .navbar-toggler span,
+            .navbar-head .navbar-toggler span::before,
+            .navbar-head .navbar-toggler span::after {
+                display: block;
+                content: '';
+                background-color: #fff;
+                height: 3px;
+                width: 28px;
+                transition: all ease-in-out 0.3s;
+            }
+
+                .navbar-head .navbar-toggler span::before {
+                    transform: translateY(-8px);
+                }
+
+                .navbar-head .navbar-toggler span::after {
+                    transform: translateY(5px);
+                }
+
+            .navbar-head .navbar-toggler.open-navbar-toggler span {*/
+                /* transform: rotate(90deg); */
+                /*background-color: transparent;*/
+                /* transform: scale(0.85) rotate(270deg); */
+            /*}
+
+                .navbar-head .navbar-toggler.open-navbar-toggler span::before {
+                    transform: translateY(0px) rotate(45deg);*/
+                    /* transform: translateY(0px) scale(0.75) rotate(45deg); */
+                /*}
+
+                .navbar-head .navbar-toggler.open-navbar-toggler span::after {
+                    transform: translateY(-3px) rotate(-45deg);*/
+                    /* transform: translateY(-3px) scale(0.75) rotate(-45deg); */
+                /*}*/
+}
+
+.imagen-nav {
+    width: 20%;
+}
+
+
+.footer-content {
+    background: rgb(8, 83, 148);
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    
+    width: 100%;
+    /* Like the header, the footer will have a static height - it shouldn't grow or shrink.  */
+    /* 0 flex-grow, 0 flex-shrink, auto flex-basis */
+}
+.inner {
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 50%;
+    border-radius: 10px;
+
+
+    position:absolute;
+}
+
+
+/*@media screen and (max-width: 480px) {
+    #inner {
+        width: calc(100% - 80px);
+    }
+
+}*/
+
+/**/
+.panel1 {
+   /*padding:250px 20% 20% 20%;*/
+    height:100%;
+}
+
+
+@media only screen and (max-width: 400px ) {
+    .imagen {
+        display: none;
+    }
+}
